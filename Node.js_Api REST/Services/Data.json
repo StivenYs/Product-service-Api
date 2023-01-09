@@ -1,0 +1,20 @@
+[
+  {
+    "id": "3e82c728-e2da-4ad7-bc63-bd297524b744",
+    "name": "product1",
+    "price": 1000,
+    "active": "true"
+  },
+  {
+    "id": "fe460eec-1dbb-491e-8631-0b8fdeeae404",
+    "name": "product2",
+    "price": 505,
+    "active": "false"
+  },
+  {
+    "id": "957701c1-699e-4307-a5d4-dd7c3288cbba",
+    "name": "product3",
+    "price": 1000,
+    "active": "true"
+  }
+]
