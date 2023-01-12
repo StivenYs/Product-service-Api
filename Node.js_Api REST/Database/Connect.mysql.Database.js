@@ -1,20 +1,25 @@
 const mysql = require('mysql');
-const {config} = require('./../config/config');
+const {promisify} = require('util');
+const {config:{dbUser,dbPassword,dbHost,dbName,dbPort}} = require('./../config/config');
 
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-const URI = `mysql//${USER}:${PASSWORD}:${config.dbHost}:${config.dbName}`
-    
+const USER = encodeURIComponent(dbUser);
+const PASSWORD = encodeURIComponent(dbPassword);
+const URI = `mysql://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`
+
+const pool =  mysql.createPool(URI);
+
 console.log(URI);
-const pool = new mysql.createPool({ConnectionString: URI});
 
-/*
-const pool = mysql.createPool({
-    host : 'localhost',
-    user : 'root',
-    password : '123456789',
-    database : 'product_base'
+pool.getConnection((err,connection) =>{
+    if (err) {
+        console.log('i have error' + err)
+    }
+    if (connection) connection.release();
+    console.log('connected :)')
+    return;
 });
-*/
 
+//pool.query = promisify(pool.query);
 module.exports = pool;
+
+

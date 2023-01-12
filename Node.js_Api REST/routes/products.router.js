@@ -1,6 +1,5 @@
 const express = require('express');
 const {json} = require("express");
-
 const router = express.Router();
 
 const services = require('./../Services/products_service');
@@ -20,22 +19,20 @@ router.get('/categories', (req,res)=>{
 });
 
 router.get("/:id",
-    ValidatorHandler(GetProductDTO,'params'),
-    async(req,res,next)=>{
+   /* ValidatorHandler(GetProductDTO,'params'),*/ async(req,res,next)=>{
     try {
         const {id} = req.params;
         await service.readOne(id,(data)=>{
-            if (data){ res.json(data);}
+            if (data === null){ res.json(data);}
             else { res.status(404).send('404');}
         });
     }catch (err){
         next(err);
     }
-    
 });
 
 router.post('/',
-    ValidatorHandler(CreteProductDTO,'body'),
+    /*ValidatorHandler(CreteProductDTO,'body'),*/
     async(req,res,next)=>{
     try {
         const body = req.body;
@@ -50,7 +47,7 @@ router.post('/',
 
 
 router.delete("/:id",
-    ValidatorHandler(GetProductDTO,'params'),
+    /*ValidatorHandler(GetProductDTO,'params'),*/
     async(req, res)=>{
     const {id} = req.params;
     await service.Delete(id,(Datares)=>{
@@ -80,11 +77,5 @@ router.patch("/:id",
 });
 
 module.exports = router;
-
-
-
-
-
-
 
 

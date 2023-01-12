@@ -38,19 +38,13 @@ app.listen(port,(err)=>{
 
 
 
+/*
+    modules
 
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
+    @hapi/boom
+    express
+    npm i faker@5.5.3 -S
+    joi
+    mysql
+*/
 
