@@ -19,25 +19,28 @@ router.get('/categories', (req,res)=>{
 });
 
 router.get("/:id",
-   /* ValidatorHandler(GetProductDTO,'params'),*/ async(req,res,next)=>{
+    ValidatorHandler(GetProductDTO,'params'),
+    async(req,res,next)=>{
     try {
         const {id} = req.params;
-        await service.readOne(id,(data)=>{
-            if (data === null){ res.json(data);}
-            else { res.status(404).send('404');}
-        });
+        const rest =await service.readOne(id);
+        res.json(rest);
+        
     }catch (err){
         next(err);
     }
 });
 
 router.post('/',
-    /*ValidatorHandler(CreteProductDTO,'body'),*/
+    ValidatorHandler(CreteProductDTO,'body'),
     async(req,res,next)=>{
     try {
         const body = req.body;
-        await service.Create(body);
-        res.status(201).send('Created :)');
+        const rest = await service.Create(body);
+        res.status(201).json({
+            message: 'Created :)',
+            rest
+        })
         
     }catch (err) {
         next(err);
@@ -47,14 +50,20 @@ router.post('/',
 
 
 router.delete("/:id",
-    /*ValidatorHandler(GetProductDTO,'params'),*/
-    async(req, res)=>{
-    const {id} = req.params;
-    await service.Delete(id,(Datares)=>{
-        res.status(200).json({
-            message: Datares
+    ValidatorHandler(GetProductDTO,'params'),
+    async(req, res,next)=>{
+    try {
+        const {id} = req.params;
+        const rest = await service.Delete(id);
+        res.json({
+            message: 'Delete successful',
+            id: rest
         });
-    });
+       
+    }catch (err){
+        next(err);
+    }
+   
     
 });
 
@@ -65,13 +74,11 @@ router.patch("/:id",
     try {
         const body = req.body;
         const {id} = req.params;
-        await service.Update(id,body,(data)=>{
-            res.json({
-                data: data
-            });
-        });
-    }catch (error) {
-        next(error);
+        const rest = await service.Update(id,body);
+        res.json(rest);
+        
+    }catch (err) {
+        next(err);
     }
 
 });

@@ -1,20 +1,21 @@
 const express = require('express');
 const routerApi = require('./routes');
-const {logError,ErrHandler} = require('./Middleware/error.handler');
+const {logError,ErrHandler,BoomErrHandler,OrmErrHandler} = require('./Middleware/error.handler');
 
 
 
 const app = express();
 const port = 3000;
 
-//for recive json file
+
 app.use(express.json());
 
 
 routerApi(app);
 
 app.use(logError);
-//app.use(BoomErrHandler);
+app.use(OrmErrHandler);
+app.use(BoomErrHandler);
 app.use(ErrHandler);
 
 

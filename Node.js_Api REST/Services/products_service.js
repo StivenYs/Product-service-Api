@@ -1,133 +1,35 @@
-const fs = require('fs');
-const faker = require('faker');
-const pool = require('./../Database/Connect.mysql.Database');
-const {query} = require("express");
-const {debug} = require("nodemon/lib/utils");
-
-function writeData(path,data){
-    fs.writeFile(path,data,(err)=>{
-        if (err){
-            console.error(err);
-        }
-       
-    })
-}
-function write(path,data){
-    fs.writeFile(path,data,(err)=>{
-        if (err){
-            console.error(err);
-        }
-    })
-}
-function readData(path,cb){
-    fs.readFile(path,(err,data)=>{
-        if (err){
-            console.error(err);
-        }
-        cb(data.toString());
-    });
-}
-
+const {models} = require('./../Database/sequelize');
+const boom = require("@hapi/boom");
 
 class services {
-    constructor() {
-        this.pool = pool;
-    }
-    
-    async Create(reqData){
-        
-        /*
-        const newProduct = {
-            id:faker.datatype.uuid(),
-                ...reqData
-        }
-        readData(__dirname +'/Data.json',(data)=>{
-            const convertData = JSON.parse(data);
-            convertData.push(newProduct);
-            write(__dirname + '/Data.json', JSON.stringify(convertData));
-        });
-        
-         */
-        
-        let {task_number,info_task} = reqData;
-        
-       await this.pool.query(`INSERT INTO tasks (task_number,info_task) VALUES (${task_number},"${info_task}")`,(err)=>{
-            if (err)console.log(err);
-       });
-        
-         
-        
+    async Create(req){
+        const newproduct =  await models.Product.create(req);
+        return newproduct;
     }
     async Read(){
+        
         return new Promise((resolve, reject)=>{
              setTimeout(()=>{
-                 
-                 this.pool.query('SELECT * FROM tasks ',(err,result,fields)=>{
-                     if (err) console.log("errr" + err);
-                     resolve(result);
-                 });
-                 
-                 /*
-                 readData(__dirname +'/Data.json',(data)=>{
-                     resolve(JSON.parse(data));
-                     
-                 });          
-                  */
-             },5000);
+                 const res = models.Product.findAll();
+                 resolve(res);
+             });
         });
         
     }
-    async readOne(id,cb){
-        
-       await this.pool.query(`SELECT * FROM  tasks WHERE id = ${id}`,(err,result,fields)=>{
-            if (err) throw err;
-            cb(result);
-       });
-       
-       /*
-        readData(__dirname +'/Data.json',(data)=>{
-            cb(JSON.parse(data).find(item => item.id === id));
-        });
-        
-        */
+    async readOne(id){
+        const product =  await models.Product.findByPk(id);
+        if(!product){throw boom.notFound('Product not found :(')}
+        return product;
     }
-    async Update(id,reqData,resData){
-    
-        return new Promise((resolve, reject)=>{
-            
-        readData(__dirname +'/Data.json',(data)=>{
-            const object = JSON.parse(data);
-            const index =  object.findIndex(item => item.id === id);
-            if (index === -1){reject(new Error("Product not Found ")); } 
-            else{
-                object[index] = {
-                    id,
-                    ...reqData
-                };
-                write(__dirname + '/Data.json',JSON.stringify(object));
-                resData("updated successful :)");
-            }
-        });
-        });
+    async Update(id,req){
+        const product = await this.readOne(id);
+        const rest = await product.update(req);
+        return rest;
     }
-    async Delete(id,res){
-        /*
-        readData(__dirname+'/Data.json',(data)=>{
-           const object = JSON.parse(data);
-           const index = object.findIndex(item => item.id === id);
-           if (index === -1){res('product no found 404 :(');}
-           else{
-               object.splice(index,1);
-               write(__dirname + '/Data.json',JSON.stringify(object));
-               res('Delete sucessful');
-           }
-        });
-        
-         */
-        await this.pool.query(`DELETE FROM tasks WHERE id = ${id}`,(err)=>{
-            if (err)console.log(err);
-            else { res('Delete sucessful');}
-        })
+    async Delete(id){
+        const product = await this.readOne(id);
+        await product.destroy();
+        return id;
     }
 }
 

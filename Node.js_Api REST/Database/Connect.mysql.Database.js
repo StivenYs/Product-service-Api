@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const {promisify} = require('util');
+//const {promisify} = require('util');
 const {config:{dbUser,dbPassword,dbHost,dbName,dbPort}} = require('./../config/config');
 
 const USER = encodeURIComponent(dbUser);

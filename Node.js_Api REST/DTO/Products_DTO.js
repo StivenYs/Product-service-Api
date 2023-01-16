@@ -1,21 +1,24 @@
 const Joi = require('joi');
+const {de} = require("faker/lib/locales");
 
-const id = Joi.string().uuid();
-const active = Joi.bool();
-const name = Joi.string().alphanum().min(5).max(40);
+const id = Joi.number().integer();
+const name = Joi.string().alphanum().min(3).max(40);
+const description = Joi.string();
 const price = Joi.number().integer();
+const image = Joi.string();
 
 const CreteProductDTO  = Joi.object({
     name: name.required(),
+    description: description,
     price: price.required(),
-    active: active.required()
+    image: image
 });
 
 const UpdateProductDTO = Joi.object({
-    id : id,
     name: name,
+    description: description,
     price: price,
-    active: active
+    image: image
 });
 
  const GetProductDTO = Joi.object({
