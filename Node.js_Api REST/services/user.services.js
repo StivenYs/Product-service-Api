@@ -1,4 +1,4 @@
-const {models} = require('./../Database/sequelize');
+const {models} = require('./../db/sequelize');
 const boom = require('@hapi/boom');
 class Users_services {
     async Create(reqData){

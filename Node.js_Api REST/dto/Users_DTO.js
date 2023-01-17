@@ -9,12 +9,12 @@ const role = joi.string().min(5);
 const CreateUserDTO = joi.object({
     email: email.required(),
     password: password.required(),
-   // role: role.required()
+    role: role
 });
 
 const UpdateUserDTO = joi.object({
     email: email,
-    //role: role
+    role: role
 });
 
 const GetUserDTO = joi.object({

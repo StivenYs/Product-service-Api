@@ -3,8 +3,8 @@ const {json} = require("express");
 const router = express.Router();
 
 const services = require('./../Services/products_service');
-const ValidatorHandler = require('./../DTO/ValidatorHadlerDTO');
-const {GetProductDTO,CreteProductDTO,UpdateProductDTO} = require('./../DTO/Products_DTO');
+const ValidatorHandler = require('./../dto/ValidatorHadlerDTO');
+const {GetProductDTO,CreteProductDTO,UpdateProductDTO} = require('./../dto/Products_DTO');
 
 const service = new services();
 

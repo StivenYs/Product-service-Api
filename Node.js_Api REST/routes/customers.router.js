@@ -2,40 +2,40 @@ const express = require('express');
 const {json} = require("express");
 const router = express.Router();
 
-const users_services = require('./../Services/user.services');
+const customerServices = require('./../Services/customers.services');
 const ValidatorHandler = require('./../dto/ValidatorHadlerDTO');
-const {CreateUserDTO,UpdateUserDTO,GetUserDTO} = require('./../dto/Users_DTO');
+const {CreateCustomerSchema,UpdateCustomerSchema,GetCustomerSchema} = require('./../dto/Customers_DTO');
 
-const user_service = new users_services();
+const customerService = new customerServices();
 
 router.get('/', async(req,res)=>{
-    const data = await user_service.Read();
+    const data = await customerService.Read();
     res.json(data);
 
 });
 
 router.get("/:id",
-     ValidatorHandler(GetUserDTO,'params'),
+    ValidatorHandler(GetCustomerSchema,'params'),
     async(req,res,next)=>{
         try {
             const {id} = req.params;
-            const rta = await user_service.readOne(id);
+            const rta = await customerService.readOne(id);
             res.json({
-                message: 'User with id',
+                message: 'Customer with id',
                 rta
             });
-           
+
         }catch (err){
             next(err);
         }
     });
 
 router.post('/',
-    ValidatorHandler(CreateUserDTO,'body'),
+    ValidatorHandler(CreateCustomerSchema,'body'),
     async(req,res,next)=>{
         try {
             const body = req.body;
-            const rta = await user_service.Create(body);
+            const rta = await customerService.Create(body);
             res.status(201).json({
                 message: 'Create :)',
                 rta
@@ -48,11 +48,11 @@ router.post('/',
 
 
 router.delete("/:id",
-    ValidatorHandler(GetUserDTO,'params'),
+    ValidatorHandler(GetCustomerSchema,'params'),
     async(req, res,next)=>{
         try {
             const {id} = req.params;
-            const rest = await user_service.Delete(id);
+            const rest = await customerService.Delete(id);
             res.json({
                 message: 'Delete successful',
                 id: rest
@@ -60,19 +60,19 @@ router.delete("/:id",
         }catch (err){
             next(err);
         }
-        
+
     });
 
 router.patch("/:id",
-    ValidatorHandler(GetUserDTO,'params'),
-    ValidatorHandler(UpdateUserDTO,'body'),
+    ValidatorHandler(GetCustomerSchema,'params'),
+    ValidatorHandler(UpdateCustomerSchema,'body'),
     async(req, res,next)=>{
         try {
             const body = req.body;
             const {id} = req.params;
-            const rest = await user_service.Update(id,body);
+            const rest = await customerService.Update(id,body);
             res.json(rest);
-            
+
         }catch (err) {
             next(err);
         }
