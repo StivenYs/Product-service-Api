@@ -3,13 +3,17 @@ const boom = require("@hapi/boom");
 
 class services {
     async Create(req){
-        const newCustomer =  await models.Customer.create(req);
+        const newCustomer =  await models.Customer.create(req,{
+            include:['user']
+        });
         return newCustomer;
     }
     async Read(){
         return new Promise((resolve, reject)=>{
             setTimeout(()=>{
-                const res = models.Customer.findAll();
+                const res = models.Customer.findAll({
+                    include: 'user'
+                });
                 resolve(res);
             });
         });

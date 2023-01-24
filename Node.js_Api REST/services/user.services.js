@@ -8,7 +8,9 @@ class Users_services {
     async Read(){
         return new Promise((resolve, reject) => {
             setTimeout(()=>{
-                const res = models.User.findAll();
+                const res = models.User.findAll({
+                    include: 'customer'
+                });
                 resolve(res);
             },500)
         })

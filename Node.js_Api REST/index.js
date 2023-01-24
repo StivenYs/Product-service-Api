@@ -29,7 +29,7 @@ app.listen(port,(err)=>{
     if(err){
         Console.log("There's a problem in this app");
     }
-    console.log("this is server in 3000");
+    console.log(`this is server in localhost:${port}/api/v1/`);
     console.log('200 ok');
 })
 

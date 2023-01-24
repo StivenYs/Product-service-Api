@@ -4,18 +4,18 @@ const router = express.Router();
 
 const services = require('./../Services/products_service');
 const ValidatorHandler = require('./../dto/ValidatorHadlerDTO');
-const {GetProductDTO,CreteProductDTO,UpdateProductDTO} = require('./../dto/Products_DTO');
+const {GetProductDTO,CreteProductDTO,UpdateProductDTO,queryPeductSchema} = require('./../dto/Products_DTO');
 
 const service = new services();
 
-router.get('/', async(req,res)=>{
-    const data = await service.Read();
-    res.json(data);
+router.get('/',
+    ValidatorHandler(queryPeductSchema,'query'),
+    async(req,res)=>{
+    const data = await service.Read(req.query);
+    res.json({
+        data
+    });
     
-});
-
-router.get('/categories', (req,res)=>{
-    res.send('i dont have categories available');
 });
 
 router.get("/:id",
