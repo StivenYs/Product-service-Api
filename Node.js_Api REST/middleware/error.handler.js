@@ -14,6 +14,7 @@ function ErrHandler(err,req,res,next){
 }
 
 function BoomErrHandler(err,req,res,next){
+    console.log("isBoom err")
     if (err.isBoom){
         const {output} = err;
         res.status(output.statusCode).json(output.payload);
@@ -21,6 +22,7 @@ function BoomErrHandler(err,req,res,next){
     next(err);
 }
 function OrmErrHandler(err,req,res,next){
+    console.log("ORM err")
     if (err instanceof ValidationError){
         res.status(409).json({
             statusCode: 409,

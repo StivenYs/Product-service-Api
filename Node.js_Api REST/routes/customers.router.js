@@ -22,7 +22,7 @@ router.get("/:id",
             const rta = await customerService.readOne(id);
             res.json({
                 message: 'Customer with id',
-                rta
+                customer: rta
             });
 
         }catch (err){
@@ -38,7 +38,7 @@ router.post('/',
             const rta = await customerService.Create(body);
             res.status(201).json({
                 message: 'Create :)',
-                rta
+                customer: rta
             });
 
         }catch (err) {

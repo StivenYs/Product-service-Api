@@ -1,6 +1,7 @@
 const express = require('express');
 const {json} = require("express");
 const router = express.Router();
+const passport = require('passport');
 
 const CategoryServices = require('./../Services/categories.services');
 const ValidatorHandler = require('./../dto/ValidatorHadlerDTO');
@@ -31,6 +32,7 @@ router.get("/:id",
     });
 
 router.post('/',
+    passport.authenticate('jwt',{session:false}),
     ValidatorHandler(CreateCategorySchema,'body'),
     async(req,res,next)=>{
         try {
